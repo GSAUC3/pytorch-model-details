@@ -4,7 +4,64 @@
 ```
 pip install modelsummary-pytorch==1.0.0
 ```
+## Example 1
 
+```python
+from torch import nn
+from pytorchsummary import parameter_summary
+
+class CNNET(nn.Module):
+    def __init__(self):
+        super(CNNET,self).__init__()
+
+        self.layer = nn.Sequential(
+            nn.Conv2d(3,16,5), # 28-5+1
+            nn.ReLU(), #24
+            nn.MaxPool2d(2,2), # 12
+
+            nn.Conv2d(16,32,3), # 12+1-3
+            nn.ReLU(), # 10
+            nn.MaxPool2d(2,2), # 5
+            
+
+            nn.Conv2d(32,64,5), # 11-3+1
+            nn.ReLU(),
+
+            nn.Conv2d(64,10,1)   
+        )
+    
+    def forward(self,x):
+        x = self.layer(x)
+        return x
+
+m = CNNET()
+parameter_summary(m,False) 
+# parameter_summary(model=m,border=False)
+# if border set to True then it will print 
+# the lines in between every layer 
+
+```
+
+### Output
+```
+LAYER TYPE                   KERNEL SHAPE     #parameters        (weights+bias)
+____________________________________________________________________________________________________
+ Conv2d-2                  [16, 3, 5, 5]    	1,216                (1200 + 16)
+ ReLU-3                          -          	-                          -
+ MaxPool2d-4                     -          	-                          -
+ Conv2d-5                  [32, 16, 3, 3]   	4,640                (4608 + 32)
+ ReLU-6                          -          	-                          -
+ MaxPool2d-7                     -          	-                          -
+ Conv2d-8                  [64, 32, 5, 5]   	51,264               (51200 + 64)
+ ReLU-9                          -          	-                          -
+ Conv2d-10                 [10, 64, 1, 1]   	650                 (640 + 10)
+====================================================================================================
+
+Total parameters 57,770
+
+57770
+```
+## Example 2
 ```python
 from torchvision import models
 from pytorchsummary import parameter_summary
@@ -14,7 +71,7 @@ parameter_summary(m)
 # this function returns the total number of 
 # parameters (int) in a model
 ```
-
+### ouput
 ```
 LAYER TYPE                   KERNEL SHAPE     #parameters        (weights+bias)
 ____________________________________________________________________________________________________
