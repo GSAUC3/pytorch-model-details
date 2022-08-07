@@ -1,0 +1,1 @@
+from .pytorchsummary import parameter_summary

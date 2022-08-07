@@ -1,1 +1,4 @@
 demo.ipynb
+build/
+dist/
+modelsummary_pytorch.egg-info/
