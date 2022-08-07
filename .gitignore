@@ -1,4 +1,5 @@
 demo.ipynb
 build/
 dist/
-modelsummary_pytorch.egg-info/
+pytorchsummary.egg-info/
+pytorchsummary/__pycache__
