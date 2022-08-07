@@ -26,45 +26,36 @@ __all__ = [
     'Flatten', 'Unflatten', 'Hardsigmoid', 'Hardswish', 'SiLU', 'Mish', 'TripletMarginWithDistanceLoss', 'ChannelShuffle'
 ]
 
-
 def parameter_summary(model,border=True):
     '''
     Args: 
         model: PyTorch model
         border: Seperation line after printing out 
-        the details of each layer, default = False
+        the details of each layer, default = True
     Returns: 
         summary of all the number of parameters of the model
     '''
     total_params = 0
     s="{:<20}     {:^20} {}  {:>20}\n".format('LAYER TYPE','KERNEL SHAPE', '#parameters',' (weights+bias)')
     s += "_"*100 + "\n"
-    
-    for index,i in enumerate(model.modules()):
+    index=1
+    for  i in model.modules():
         if i._get_name() in __all__:
             if border: s += "_"*100 + "\n"
             layer=i._get_name()
             if bool(i._parameters.keys()):
                 weight_shape = list(i._parameters['weight'].shape)
                 x = math.prod(weight_shape)
-       
-                if i._parameters['bias'] is None:
-                    i._parameters['bias']=[]
-                
-                bias = len(i._parameters['bias'])
-                total_params+= x+bias
-                
-                s += " {:<20}   {:^20}\t{:,}  {:>25}\n".format(layer+'-'+str(index),str(weight_shape),x+bias,f'({x} + {bias})')
-                # if i._parameters['bias'] is not None:
-                #     bias = list(i._parameters['bias'].shape)
-                #     print(x+bias[0])
-                # else:
-                #     total_params+= x
-                #     print(x)
-    
+                if i._parameters['bias'] is not None:
+                    bias = list(i._parameters['bias'].shape)
+                    total_params += x+bias[0]
+                    s += " {:<20}   {:^20}\t{:,}  {:>25}\n".format(layer+'-'+str(index),str(weight_shape),x+bias[0],f'({x} + {bias[0]})')
+                else:
+                    s += " {:<20}   {:^20}\t{:,}  {:>25}\n".format(layer+'-'+str(index),str(weight_shape),x,f'({x})')
+                    total_params+= x
             else:    
                 s += " {:<20}   {:^20}\t{:}  {:>25}\n".format(layer+'-'+str(index),'-','-','-')
-
+            index+=1
     s += "="*100 +"\n"
     print(s)           
     print('Total parameters {:,}'.format(total_params))
