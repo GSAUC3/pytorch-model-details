@@ -16,8 +16,7 @@ setup(
     author_email="raju.banerjee.720@gmail.com",
     license="MIT",
     keywords=['python','PyTorch','Pytorch model summary','Pytorch parameter summary'],
-    package_dir={'':"src"},
-    packages=find_packages("src"),
+    packages=["pytorchsummary"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License"
