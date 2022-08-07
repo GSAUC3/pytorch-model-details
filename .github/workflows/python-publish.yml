@@ -10,11 +10,11 @@ name: Upload Python Package
 
 on:
   release:
-    types: [published]
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+    types: [created]
+#   push:
+#     branches: [master]
+#   pull_request:
+#     branches: [master]
   workflow_dispatch: 
 
 permissions:
