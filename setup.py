@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name= "modelsummary-pytorch",
+    name= "pytorchsummary",
     version="1.0.0",
     description="Summary of PyTorch Models just like `model.summary() in Keras",
     url="https://github.com/GSAUC3/pytorch-model-details",
