@@ -7,7 +7,7 @@ README = (HERE/"readme.md").read_text()
 
 setup(
     name= "pytorchsummary",
-    version="1.0.3",
+    version="1.0.4",
     description="Summary of PyTorch Models just like `model.summary() in Keras",
     long_description=README,
     long_description_content_type='text/markdown',

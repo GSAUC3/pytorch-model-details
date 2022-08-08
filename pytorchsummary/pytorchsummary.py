@@ -36,7 +36,9 @@ def parameter_summary(model,border=True):
         summary of all the number of parameters of the model
     '''
     total_params = 0
-    s="{:<20}     {:^20} {}  {:>20}\n".format('LAYER TYPE','KERNEL SHAPE', '#parameters',' (weights+bias)')
+    non_trainable=0
+    s="{:<20}     {:^20} {}  {:>20} {:^30}\n".format('LAYER TYPE','KERNEL SHAPE',
+     '#parameters',' (weights+bias)','requires_grad')
     s += "_"*100 + "\n"
     index=1
     for  i in model.modules():
@@ -46,18 +48,26 @@ def parameter_summary(model,border=True):
             if bool(i._parameters.keys()):
                 weight_shape = list(i._parameters['weight'].shape)
                 x = math.prod(weight_shape)
+                Wgrad = i._parameters['weight'].requires_grad
+                if not Wgrad: non_trainable+=x
+
                 if i._parameters['bias'] is not None:
                     bias = list(i._parameters['bias'].shape)
                     total_params += x+bias[0]
-                    s += " {:<20}   {:^20}\t{:,}  {:>25}\n".format(layer+'-'+str(index),str(weight_shape),x+bias[0],f'({x} + {bias[0]})')
+                    Bgrad = i._parameters['bias'].requires_grad
+                    if not Bgrad: non_trainable+=bias[0]
+                    
+                    s += " {:<20}   {:^20}\t{:,}  {:>25} {:^30}\n".format(layer+'-'+str(index),
+                    str(weight_shape),x+bias[0],f'({x} + {bias[0]})',f'{Wgrad} {Bgrad}')
                 else:
-                    s += " {:<20}   {:^20}\t{:,}  {:>25}\n".format(layer+'-'+str(index),str(weight_shape),x,f'({x})')
+                    s += " {:<20}   {:^20}\t{:,}  {:>25} {:^30}\n".format(layer+'-'+str(index),str(weight_shape),x,f'({x}+0)',str(Wgrad))
                     total_params+= x
             else:    
-                s += " {:<20}   {:^20}\t{:}  {:>25}\n".format(layer+'-'+str(index),'-','-','-')
+                s += " {:<20}   {:^20}\t{:}  {:>25} {:^30}\n".format(layer+'-'+str(index),'-','-','-','')
             index+=1
     s += "="*100 +"\n"
     print(s)           
     print('Total parameters {:,}'.format(total_params))
+    print('Total Non-Trainable parameters {:,}'.format(non_trainable))
+    print('Total Trainable parameters {:,}'.format(total_params-non_trainable))
     return total_params
-    
