@@ -1,4 +1,4 @@
-import math
+import torch
 
 
 __all__ = [
@@ -26,7 +26,7 @@ __all__ = [
     'Flatten', 'Unflatten', 'Hardsigmoid', 'Hardswish', 'SiLU', 'Mish', 'TripletMarginWithDistanceLoss', 'ChannelShuffle'
 ]
 
-def parameter_summary(model,border=True):
+def parameter_summary(model,border=False):
     '''
     Args: 
         model: PyTorch model
@@ -46,8 +46,9 @@ def parameter_summary(model,border=True):
             if border: s += "_"*100 + "\n"
             layer=i._get_name()
             if bool(i._parameters.keys()):
-                weight_shape = list(i._parameters['weight'].shape)
-                x = math.prod(weight_shape)
+                weight_shape = torch.tensor(i._parameters['weight'].shape)
+                _weight_shape = list(i._parameters['weight'].shape)
+                x=torch.prod(weight_shape).item()
                 Wgrad = i._parameters['weight'].requires_grad
                 if not Wgrad: non_trainable+=x
 
@@ -58,11 +59,12 @@ def parameter_summary(model,border=True):
                     if not Bgrad: non_trainable+=bias[0]
                     
                     s += " {:<20}   {:^20}\t{:,}  {:>25} {:^30}\n".format(layer+'-'+str(index),
-                    str(weight_shape),x+bias[0],f'({x} + {bias[0]})',f'{Wgrad} {Bgrad}')
+                    str(_weight_shape),x+bias[0],f'({x} + {bias[0]})',f'{Wgrad} {Bgrad}')
                 else:
-                    s += " {:<20}   {:^20}\t{:,}  {:>25} {:^30}\n".format(layer+'-'+str(index),str(weight_shape),x,f'({x}+0)',str(Wgrad))
+                    s += " {:<20}   {:^20}\t{:,}  {:>25} {:^30}\n".format(layer+'-'+str(index),str(_weight_shape),x,f'({x}+0)',str(Wgrad))
                     total_params+= x
-            else:    
+            else:   
+                 
                 s += " {:<20}   {:^20}\t{:}  {:>25} {:^30}\n".format(layer+'-'+str(index),'-','-','-','')
             index+=1
     s += "="*100 +"\n"
@@ -71,3 +73,4 @@ def parameter_summary(model,border=True):
     print('Total Non-Trainable parameters {:,}'.format(non_trainable))
     print('Total Trainable parameters {:,}'.format(total_params-non_trainable))
     return total_params
+
