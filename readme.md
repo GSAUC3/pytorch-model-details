@@ -130,8 +130,9 @@ Total Non-Trainable parameters 0
 Total Trainable parameters 61,100,840
 ```
 
+### Calculating the number of specific layer, or layer frequencies
 ```python
-from pytorchsummary import get_num_layers(model)
+from pytorchsummary import get_num_layers
 print(get_num_layers(m)) # alexnet model 
 ```
 Output:
