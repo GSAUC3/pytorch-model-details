@@ -2,7 +2,7 @@
 
 #### Install using pip
 ```
-pip install modelsummary-pytorch==1.0.0
+pip install pytorchsummary
 ```
 ## Example 1
 
@@ -36,6 +36,10 @@ class CNNET(nn.Module):
 
 m = CNNET()
 parameter_summary(m,False) 
+for i,j in enumerate(m.parameters()):
+    if i==2:
+        break
+    j.requires_grad=False 
 # parameter_summary(model=m,border=False)
 # if border set to True then it will print 
 # the lines in between every layer 
