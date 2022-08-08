@@ -1,5 +1,5 @@
 import torch
-
+from collections import Counter
 
 __all__ = [
     'Module', 'Identity', 'Linear', 'Conv1d', 'Conv2d', 'Conv3d', 'ConvTranspose1d',
@@ -26,14 +26,18 @@ __all__ = [
     'Flatten', 'Unflatten', 'Hardsigmoid', 'Hardswish', 'SiLU', 'Mish', 'TripletMarginWithDistanceLoss', 'ChannelShuffle'
 ]
 
-def parameter_summary(model,border=False):
+def parameter_summary(model,_print:bool=True,border:bool=False)->tuple:
     '''
     Args: 
         model: PyTorch model
         border: Seperation line after printing out 
-        the details of each layer, default = True
+          the details of each layer, default = True
+        _print: default==True , if set to False
+          it won't print the summary, it will just 
+          return the number of parameters (values)
     Returns: 
-        summary of all the number of parameters of the model
+        A tuple
+        (Total-TRAINABLE-params, total-params, total-NON-trainable-params)
     '''
     total_params = 0
     non_trainable=0
@@ -68,9 +72,19 @@ def parameter_summary(model,border=False):
                 s += " {:<20}   {:^20}\t{:}  {:>25} {:^30}\n".format(layer+'-'+str(index),'-','-','-','')
             index+=1
     s += "="*100 +"\n"
-    print(s)           
-    print('Total parameters {:,}'.format(total_params))
-    print('Total Non-Trainable parameters {:,}'.format(non_trainable))
-    print('Total Trainable parameters {:,}'.format(total_params-non_trainable))
-    return total_params
 
+    if _print:
+        print(s)           
+        print('Total parameters {:,}'.format(total_params))
+        print('Total Non-Trainable parameters {:,}'.format(non_trainable))
+        print('Total Trainable parameters {:,}'.format(total_params-non_trainable))
+    return (total_params-non_trainable,total_params,non_trainable)
+
+
+def get_num_layers(model)->dict:
+    l =[]
+    for i in model.modules():
+        name=i._get_name()
+        if name in __all__:
+            l.append(name)
+    return dict(Counter(l))

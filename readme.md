@@ -129,3 +129,17 @@ Total parameters 61,100,840
 Total Non-Trainable parameters 0
 Total Trainable parameters 61,100,840
 ```
+
+```python
+from pytorchsummary import get_num_layers(model)
+print(get_num_layers(m)) # alexnet model 
+```
+Output:
+```
+{'Conv2d': 5,
+ 'ReLU': 7,
+ 'MaxPool2d': 3,
+ 'AdaptiveAvgPool2d': 1,
+ 'Dropout': 2,
+ 'Linear': 3}
+ ```

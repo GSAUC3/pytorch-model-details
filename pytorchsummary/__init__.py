@@ -1,1 +1,1 @@
-from .pytorchsummary import parameter_summary
+from .pytorchsummary import parameter_summary,get_num_layers
