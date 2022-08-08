@@ -2,7 +2,7 @@
 
 #### Install using pip
 ```
-pip install modelsummary-pytorch==1.0.0
+pip install pytorchsummary
 ```
 ## Example 1
 
