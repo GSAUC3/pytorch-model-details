@@ -4,3 +4,5 @@ dist/
 pytorchsummary.egg-info/
 pytorchsummary/__pycache__
 test.ipynb
+test.py
+demo.py
