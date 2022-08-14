@@ -4,6 +4,9 @@
 ```
 pip install pytorchsummary
 ```
+## WORKS ONLY ON CNNs
+
+
 ## Example 1
 
 ```python
