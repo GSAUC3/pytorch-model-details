@@ -4,7 +4,7 @@
 ```
 pip install pytorchsummary
 ```
-## WORKS ONLY ON CNNs
+## WORKS ON CNNs and MPLs
 
 
 ## Example 1
