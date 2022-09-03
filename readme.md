@@ -154,3 +154,52 @@ Output:
  'Dropout': 2,
  'Linear': 3}
  ```
+
+
+# Example For MLPs
+
+```python
+
+from pytorchsummary import summary
+from torch import nn
+
+class Net(nn.Module):
+  def __init__(self):
+    super(Net,self).__init__()
+    self.l = nn.Sequential(
+        nn.Linear(18,16),
+        nn.ReLU(),
+        nn.Linear(16,8),
+        nn.ReLU(),
+        nn.Linear(8,4)
+    )
+  def forward(self,x):
+    return self.l(x)
+  
+model = Net()
+summary((18,),model) 
+
+```
+`summary()` function takes inputsize as a tuple so
+**if len(input_size)==1**
+you have to use `,` like this
+`((input_size,))`
+
+Otherwise it will throw an error
+
+### output
+```
+               Layer	Output Shape        	    Kernal Shape    	#params             	#(weights + bias)   	requires_grad
+------------------------------------------------------------------------------------------------------------------------------------------------------
+            Linear-1	[1, 16]             	      [16, 18]      	304                 	(288 + 16)          	True True 
+              ReLU-2	[1, 16]             	                    	                    	                    	          
+            Linear-3	[1, 8]              	      [8, 16]       	136                 	(128 + 8)           	True True 
+              ReLU-4	[1, 8]              	                    	                    	                    	          
+            Linear-5	[1, 4]              	       [4, 8]       	36                  	(32 + 4)            	True True 
+______________________________________________________________________________________________________________________________________________________
+
+Total parameters 476
+Total Non-Trainable parameters 0
+Total Trainable parameters 476
+(476, 476, 0)
+```
