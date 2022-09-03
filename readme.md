@@ -6,7 +6,7 @@ pip install pytorchsummary
 ```
 ## WORKS ON CNNs and MLPs
 
-NOTE: `summary()` functions returns a Tuple for (Total_trainable_params, Total_parameters, Total_non_trainable_params)
+NOTE: `summary()` function returns a Tuple like `(Total_trainable_params, Total_parameters, Total_non_trainable_params)`
 
 ## Example 1
 
